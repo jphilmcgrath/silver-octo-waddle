@@ -1,0 +1,671 @@
+---
+title: "Word_Submission"
+author: "Jordan McGrath"
+date: "2023-04-14"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(pander)
+library(mosaic)
+library(DT)
+library(plotly)
+library(tidyr)
+library(tidyverse)
+EXCEL <- read_csv("EXCEL.csv", col_types = cols(RACE = col_character(), 
+    MARITIAL_STATUS = col_character(), EDUCATION = col_character(), 
+    YEARS_W_COMPANY = col_character(), EMPLOYEMENT_STATUS = col_character(), 
+    INCOME = col_character()), na = "empty")
+```
+
+## Descriptive Statistics
+
+This section is to give an overview of the descriptive statistics for each of our variables. You will see the number of responses, average, and standard deviation of the responses for each of our theoretical variables. You will also see see a bar chart of comparative averages of each of the theoretical variables. 
+```{r cars, echo=FALSE}
+output_table <- rbind('Relationship with Coworkers'=favstats(EXCEL$RELATIONSHIP_QUALITY_WITH_COWORKERS), 'Satisfaction with Pay'=favstats(EXCEL$SATISFACTION_W_PAY), 'Satisfaction with Benefits' = favstats(EXCEL$SATISFACTION_W_BENEFITS), 'Trust in Manager' = favstats(EXCEL$TRUST_MANAGER), Communication = favstats(EXCEL$COMMUNICATION), 'Procedual Justice' = favstats(EXCEL$PROCEDURAL_JUSTICE), 'Advancement Opportunity' = favstats(EXCEL$ADVANCEMENT_OPPORTUNITIES), 'Lack of Alternative Job Opportunity' = favstats(EXCEL$LACK_ALTERNATIVE_JOB_OPPORTUNITY), 'Perceived Organizational Support' = favstats(EXCEL$PERCEIVED_ORGANIZATIONAL_SUPPORT), 'Intention for Turnover' = favstats(EXCEL$INTENT_TURNOVER))
+pander(output_table[c('mean','sd','n')], caption='Average of all Theoretical Variables')
+
+meangraph <- data.frame(Variables = c('RELATIONSHIP_QUALITY_WITH_COWORKERS',	'SATISFACTION_W_PAY',	'SATISFACTION_W_BENEFITS',	'TRUST_MANAGER',	'COMMUNICATION',	'PROCEDURAL_JUSTICE',	'ADVANCEMENT_OPPORTUNITIES',	'LACK_ALTERNATIVE_JOB_OPPORTUNITY',	',PERCEIVED_ORGANIZATIONAL_SUPPORT',	'INTENT_TURNOVER'), Mean = c(3.681,3.003,3.203,3.524,3.733,3.34,3.065,3.252,3.362,2.906))
+ggplot(meangraph, aes(Variables, Mean, )) +
+  geom_col()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+
+```{r, echo=FALSE}
+hist(EXCEL$RELATIONSHIP_QUALITY_WITH_COWORKERS, main = "Relationship Quality with Coworkers Distribution", col = "firebrick")
+```
+
+
+
+
+
+
+
+## Exploration of Differences Accross Subgroups
+  Each of these analysis are done with the following subgroups, Age, Marital Status, Years at your current company, Ethnicity, Annual Household Income, and Education Level. Below, we have given the definitions of each of the numbers given for each subgroups(ex. Education Level: 1 = )
+  
+
+# Intention to quit ANOVAs and T-Tests
+
+Intention to Quit:Age (ANOVA)
+```{r, echo=FALSE}
+intention_age.aov <- aov(INTENT_TURNOVER ~ AGE, data = EXCEL)
+summary(intention_age.aov)%>%
+  pander()
+```
+Intention to Quit:Ethnicity (ANOVA)
+```{r, echo=FALSE}
+intention_race.aov <- aov(INTENT_TURNOVER ~ RACE, data = EXCEL)
+summary(intention_race.aov)%>%
+  pander()
+```
+Intention to Quit:Education (ANOVA)
+```{r, echo=FALSE}
+intention_education.aov <- aov(INTENT_TURNOVER ~ EDUCATION, data = EXCEL)
+summary(intention_education.aov)%>%
+  pander()
+```
+Intention to Quit:Years with Company (ANOVA)
+```{r, echo=FALSE}
+intention_years.aov <- aov(INTENT_TURNOVER ~ YEARS_W_COMPANY, data = EXCEL)
+summary(intention_years.aov)%>%
+  pander()
+```
+Intention to Quit:Employment Status (ANOVA)
+```{r, echo=FALSE}
+intention_emp.aov <- aov(INTENT_TURNOVER ~ EMPLOYEMENT_STATUS, data = EXCEL)
+summary(intention_emp.aov)%>%
+  pander()
+```
+Intention to Quit:Income (ANOVA)
+```{r, echo=FALSE}
+intention_income.aov <- aov(INTENT_TURNOVER ~ INCOME, data = EXCEL)
+summary(intention_income.aov)%>%
+  pander()
+```
+Intention to Quit:Marital Status (T-Test)
+```{r, echo=FALSE}
+pander(t.test(INTENT_TURNOVER ~ MARITIAL_STATUS, data = EXCEL, mu = 0, alternative = "two.sided", conf.level = 0.95), caption = 'Intention of turnover by marital status')
+```
+# Relationship Quality with Coworkers ANOVAs and T-Tests
+
+Relationship Quality with Coworkers:Age (ANOVA)
+```{r, echo=FALSE}
+relationship_age.aov <- aov(RELATIONSHIP_QUALITY_WITH_COWORKERS ~ AGE, data = EXCEL)
+summary(relationship_age.aov)%>%
+  pander()
+```
+Relationship Quality with Coworkers:Ethnicity (ANOVA)
+```{r, echo=FALSE}
+relationship_race.aov <- aov(RELATIONSHIP_QUALITY_WITH_COWORKERS ~ RACE, data = EXCEL)
+summary(relationship_race.aov)%>%
+  pander()
+```
+Relationship Quality with Coworkers:Education (ANOVA)
+```{r, echo=FALSE}
+relationship_education.aov <- aov(RELATIONSHIP_QUALITY_WITH_COWORKERS ~ EDUCATION, data = EXCEL)
+summary(relationship_education.aov)%>%
+  pander()
+```
+Relationship Quality with Coworkers:Years with Company (ANOVA)
+```{r, echo=FALSE}
+relationship_years.aov <- aov(RELATIONSHIP_QUALITY_WITH_COWORKERS ~ YEARS_W_COMPANY, data = EXCEL)
+summary(relationship_years.aov)%>%
+  pander()
+```
+Relationship Quality with Coworkers:Employment Status (ANOVA)
+```{r, echo=FALSE}
+relationship_emp.aov <- aov(RELATIONSHIP_QUALITY_WITH_COWORKERS ~ EMPLOYEMENT_STATUS, data = EXCEL)
+summary(relationship_emp.aov)%>%
+  pander()
+```
+Relationship Quality with Coworkers:Income (ANOVA)
+```{r, echo=FALSE}
+relationship_income.aov <- aov(RELATIONSHIP_QUALITY_WITH_COWORKERS ~ INCOME, data = EXCEL)
+summary(relationship_income.aov)%>%
+  pander()
+```
+Relationship Quality with Coworkers:Marital Status (T-Test)
+```{r, echo=FALSE}
+pander(t.test(RELATIONSHIP_QUALITY_WITH_COWORKERS ~ MARITIAL_STATUS, data = EXCEL, mu = 0, alternative = "two.sided", conf.level = 0.95), caption = 'Relationship Quality with Coworkers by marital status')
+```
+
+# Satisfaction of Pay ANOVAs and T-Tests
+
+Satisfaction of Pay:Age (ANOVA)
+```{r, echo=FALSE}
+satisfaction_pay_age.aov <- aov(SATISFACTION_W_PAY ~ AGE, data = EXCEL)
+summary(satisfaction_pay_age.aov)%>%
+  pander()
+```
+Satisfaction of Pay:Ethnicity (ANOVA)
+```{r, echo=FALSE}
+satisfaction_pay_race.aov <- aov(SATISFACTION_W_PAY ~ RACE, data = EXCEL)
+summary(satisfaction_pay_race.aov)%>%
+  pander()
+```
+Satisfaction of Pay:Education (ANOVA)
+```{r, echo=FALSE}
+satisfaction_pay_education.aov <- aov(SATISFACTION_W_PAY ~ EDUCATION, data = EXCEL)
+summary(satisfaction_pay_education.aov)%>%
+  pander()
+```
+Satisfaction of Pay:Years with Company (ANOVA)
+```{r, echo=FALSE}
+satisfaction_pay_years.aov <- aov(SATISFACTION_W_PAY ~ YEARS_W_COMPANY, data = EXCEL)
+summary(satisfaction_pay_years.aov)%>%
+  pander()
+```
+Satisfaction of Pay:Employment Status (ANOVA)
+```{r, echo=FALSE}
+satisfaction_pay_emp.aov <- aov(SATISFACTION_W_PAY ~ EMPLOYEMENT_STATUS, data = EXCEL)
+summary(satisfaction_pay_emp.aov)%>%
+  pander()
+```
+Satisfaction of Pay:Income (ANOVA)
+```{r, echo=FALSE}
+satisfaction_pay_income.aov <- aov(SATISFACTION_W_PAY ~ INCOME, data = EXCEL)
+summary(satisfaction_pay_income.aov)%>%
+  pander()
+```
+Satisfaction of Pay:Marital Status (T-Test)
+```{r, echo=FALSE}
+pander(t.test(SATISFACTION_W_PAY ~ MARITIAL_STATUS, data = EXCEL, mu = 0, alternative = "two.sided", conf.level = 0.95), caption = 'Satisfaction of Pay by marital status')
+```
+
+# Satisfaction of Benefits ANOVAs and T-Tests
+
+Satisfaction of Benefits:Age (ANOVA)
+```{r, echo=FALSE}
+satisfaction_ben_age.aov <- aov(SATISFACTION_W_BENEFITS ~ AGE, data = EXCEL)
+summary(satisfaction_ben_age.aov)%>%
+  pander()
+```
+Satisfaction of Benefits:Ethnicity (ANOVA)
+```{r, echo=FALSE}
+satisfaction_ben_race.aov <- aov(SATISFACTION_W_BENEFITS ~ RACE, data = EXCEL)
+summary(satisfaction_ben_race.aov)%>%
+  pander()
+```
+Satisfaction of Benefits:Education (ANOVA)
+```{r, echo=FALSE}
+satisfaction_ben_education.aov <- aov(SATISFACTION_W_BENEFITS ~ EDUCATION, data = EXCEL)
+summary(satisfaction_ben_education.aov)%>%
+  pander()
+```
+Satisfaction of Benefits:Years with Company (ANOVA)
+```{r, echo=FALSE}
+satisfaction_ben_years.aov <- aov(SATISFACTION_W_BENEFITS ~ YEARS_W_COMPANY, data = EXCEL)
+summary(satisfaction_ben_years.aov)%>%
+  pander()
+```
+Satisfaction of Benefits:Employment Status (ANOVA)
+```{r, echo=FALSE}
+satisfaction_ben_emp.aov <- aov(SATISFACTION_W_BENEFITS ~ EMPLOYEMENT_STATUS, data = EXCEL)
+summary(satisfaction_ben_emp.aov)%>%
+  pander()
+```
+Satisfaction of Benefits:Income (ANOVA)
+```{r, echo=FALSE}
+satisfaction_ben_income.aov <- aov(SATISFACTION_W_BENEFITS ~ INCOME, data = EXCEL)
+summary(satisfaction_ben_income.aov)%>%
+  pander()
+```
+Satisfaction of Benefits:Marital Status (T-Test)
+```{r, echo=FALSE}
+pander(t.test(SATISFACTION_W_BENEFITS ~ MARITIAL_STATUS, data = EXCEL, mu = 0, alternative = "two.sided", conf.level = 0.95), caption = 'Satisfaction of Benefits by marital status')
+```
+
+# Trust in Manager ANOVAs and T-Tests
+
+Trust in Manager:Age (ANOVA)
+```{r, echo=FALSE}
+trust_age.aov <- aov(TRUST_MANAGER ~ AGE, data = EXCEL)
+summary(trust_age.aov)%>%
+  pander()
+```
+Trust in Manager:Ethnicity (ANOVA)
+```{r, echo=FALSE}
+trust_race.aov <- aov(TRUST_MANAGER ~ RACE, data = EXCEL)
+summary(trust_race.aov)%>%
+  pander()
+```
+Trust in Manager:Education (ANOVA)
+```{r, echo=FALSE}
+trust_education.aov <- aov(TRUST_MANAGER ~ EDUCATION, data = EXCEL)
+summary(trust_education.aov)%>%
+  pander()
+```
+Trust in Manager:Years with Company (ANOVA)
+```{r, echo=FALSE}
+trust_years.aov <- aov(TRUST_MANAGER ~ YEARS_W_COMPANY, data = EXCEL)
+summary(trust_years.aov)%>%
+  pander()
+```
+Trust in Manager:Employment Status (ANOVA)
+```{r, echo=FALSE}
+trust_emp.aov <- aov(TRUST_MANAGER ~ EMPLOYEMENT_STATUS, data = EXCEL)
+summary(trust_emp.aov)%>%
+  pander()
+```
+Trust in Manager:Income (ANOVA)
+```{r, echo=FALSE}
+trust_income.aov <- aov(TRUST_MANAGER ~ INCOME, data = EXCEL)
+summary(trust_income.aov)%>%
+  pander()
+```
+Trust in Manager:Marital Status (T-Test)
+```{r, echo=FALSE}
+pander(t.test(TRUST_MANAGER ~ MARITIAL_STATUS, data = EXCEL, mu = 0, alternative = "two.sided", conf.level = 0.95), caption = 'Trust in Manager by marital status')
+```
+
+# Communication ANOVAs and T-Tests
+
+Communication:Age (ANOVA)
+```{r, echo=FALSE}
+Comm_age.aov <- aov(COMMUNICATION ~ AGE, data = EXCEL)
+summary(Comm_age.aov)%>%
+  pander()
+```
+Communication:Ethnicity (ANOVA)
+```{r, echo=FALSE}
+Comm_race.aov <- aov(COMMUNICATION ~ RACE, data = EXCEL)
+summary(Comm_race.aov)%>%
+  pander()
+```
+Communication:Education (ANOVA)
+```{r, echo=FALSE}
+Comm_education.aov <- aov(COMMUNICATION ~ EDUCATION, data = EXCEL)
+summary(Comm_education.aov)%>%
+  pander()
+```
+Communication:Years with Company (ANOVA)
+```{r, echo=FALSE}
+Comm_years.aov <- aov(COMMUNICATION ~ YEARS_W_COMPANY, data = EXCEL)
+summary(Comm_years.aov)%>%
+  pander()
+```
+Communication:Employment Status (ANOVA)
+```{r, echo=FALSE}
+Comm_emp.aov <- aov(COMMUNICATION ~ EMPLOYEMENT_STATUS, data = EXCEL)
+summary(Comm_emp.aov)%>%
+  pander()
+```
+Communication:Income (ANOVA)
+```{r, echo=FALSE}
+Comm_income.aov <- aov(COMMUNICATION ~ INCOME, data = EXCEL)
+summary(Comm_income.aov)%>%
+  pander()
+```
+Communication:Marital Status (T-Test)
+```{r, echo=FALSE}
+pander(t.test(COMMUNICATION ~ MARITIAL_STATUS, data = EXCEL, mu = 0, alternative = "two.sided", conf.level = 0.95), caption = 'Communication by marital status')
+```
+
+# Procedural Justice in Organization ANOVAs and T-Tests
+
+Procedural Justice in Organization:Age (ANOVA)
+```{r, echo=FALSE}
+just_age.aov <- aov(PROCEDURAL_JUSTICE ~ AGE, data = EXCEL)
+summary(just_age.aov)%>%
+  pander()
+```
+Procedural Justice in Organization:Ethnicity (ANOVA)
+```{r, echo=FALSE}
+just_race.aov <- aov(PROCEDURAL_JUSTICE ~ RACE, data = EXCEL)
+summary(just_race.aov)%>%
+  pander()
+```
+Procedural Justice in Organization:Education (ANOVA)
+```{r, echo=FALSE}
+just_education.aov <- aov(PROCEDURAL_JUSTICE ~ EDUCATION, data = EXCEL)
+summary(just_education.aov)%>%
+  pander()
+```
+Procedural Justice in Organization:Years with Company (ANOVA)
+```{r, echo=FALSE}
+just_years.aov <- aov(PROCEDURAL_JUSTICE ~ YEARS_W_COMPANY, data = EXCEL)
+summary(just_years.aov)%>%
+  pander()
+```
+Procedural Justice in Organization:Employment Status (ANOVA)
+```{r, echo=FALSE}
+just_emp.aov <- aov(PROCEDURAL_JUSTICE ~ EMPLOYEMENT_STATUS, data = EXCEL)
+summary(just_emp.aov)%>%
+  pander()
+```
+Procedural Justice in Organization:Income (ANOVA)
+```{r, echo=FALSE}
+just_income.aov <- aov(PROCEDURAL_JUSTICE ~ INCOME, data = EXCEL)
+summary(just_income.aov)%>%
+  pander()
+```
+Procedural Justice in Organization:Marital Status (T-Test)
+```{r, echo=FALSE}
+pander(t.test(PROCEDURAL_JUSTICE ~ MARITIAL_STATUS, data = EXCEL, mu = 0, alternative = "two.sided", conf.level = 0.95), caption = 'Procedural Justice in Organization by marital status')
+```
+
+# Advancement Opportunities ANOVAs and T-Tests
+
+Advancement Opportunities:Age (ANOVA)
+```{r, echo=FALSE}
+advance_age.aov <- aov(ADVANCEMENT_OPPORTUNITIES ~ AGE, data = EXCEL)
+summary(advance_age.aov)%>%
+  pander()
+```
+Advancement Opportunities:Ethnicity (ANOVA)
+```{r, echo=FALSE}
+advance_race.aov <- aov(ADVANCEMENT_OPPORTUNITIES ~ RACE, data = EXCEL)
+summary(advance_race.aov)%>%
+  pander()
+```
+Advancement Opportunities:Education (ANOVA)
+```{r, echo=FALSE}
+advance_education.aov <- aov(ADVANCEMENT_OPPORTUNITIES ~ EDUCATION, data = EXCEL)
+summary(advance_education.aov)%>%
+  pander()
+```
+Advancement Opportunities:Years with Company (ANOVA)
+```{r, echo=FALSE}
+advance_years.aov <- aov(ADVANCEMENT_OPPORTUNITIES ~ YEARS_W_COMPANY, data = EXCEL)
+summary(advance_years.aov)%>%
+  pander()
+```
+Advancement Opportunities:Employment Status (ANOVA)
+```{r, echo=FALSE}
+advance_emp.aov <- aov(ADVANCEMENT_OPPORTUNITIES ~ EMPLOYEMENT_STATUS, data = EXCEL)
+summary(advance_emp.aov)%>%
+  pander()
+```
+Advancement Opportunities:Income (ANOVA)
+```{r, echo=FALSE}
+advance_income.aov <- aov(ADVANCEMENT_OPPORTUNITIES ~ INCOME, data = EXCEL)
+summary(advance_income.aov)%>%
+  pander()
+```
+Advancement Opportunities:Marital Status (T-Test)
+```{r, echo=FALSE}
+pander(t.test(ADVANCEMENT_OPPORTUNITIES ~ MARITIAL_STATUS, data = EXCEL, mu = 0, alternative = "two.sided", conf.level = 0.95), caption = 'Advancement Opportunities by marital status')
+```
+
+# Lack of other Job Opportunities ANOVAs and T-Tests
+
+Lack of other Job Opportunities:Age (ANOVA)
+```{r, echo=FALSE}
+lack_age.aov <- aov(LACK_ALTERNATIVE_JOB_OPPORTUNITY ~ AGE, data = EXCEL)
+summary(lack_age.aov)%>%
+  pander()
+```
+Lack of other Job Opportunities:Ethnicity (ANOVA)
+```{r, echo=FALSE}
+lack_race.aov <- aov(LACK_ALTERNATIVE_JOB_OPPORTUNITY ~ RACE, data = EXCEL)
+summary(lack_race.aov)%>%
+  pander()
+```
+Lack of other Job Opportunities:Education (ANOVA)
+```{r, echo=FALSE}
+lack_education.aov <- aov(LACK_ALTERNATIVE_JOB_OPPORTUNITY ~ EDUCATION, data = EXCEL)
+summary(lack_education.aov)%>%
+  pander()
+```
+Lack of other Job Opportunities:Years with Company (ANOVA)
+```{r, echo=FALSE}
+lack_years.aov <- aov(LACK_ALTERNATIVE_JOB_OPPORTUNITY ~ YEARS_W_COMPANY, data = EXCEL)
+summary(lack_years.aov)%>%
+  pander()
+```
+Lack of other Job Opportunities:Employment Status (ANOVA)
+```{r, echo=FALSE}
+lack_emp.aov <- aov(LACK_ALTERNATIVE_JOB_OPPORTUNITY ~ EMPLOYEMENT_STATUS, data = EXCEL)
+summary(lack_emp.aov)%>%
+  pander()
+```
+Lack of other Job Opportunities:Income (ANOVA)
+```{r, echo=FALSE}
+lack_income.aov <- aov(LACK_ALTERNATIVE_JOB_OPPORTUNITY ~ INCOME, data = EXCEL)
+summary(lack_income.aov)%>%
+  pander()
+```
+Lack of other Job Opportunities:Marital Status (T-Test)
+```{r, echo=FALSE}
+pander(t.test(LACK_ALTERNATIVE_JOB_OPPORTUNITY ~ MARITIAL_STATUS, data = EXCEL, mu = 0, alternative = "two.sided", conf.level = 0.95), caption = 'Lack of other Job Opportunities by marital status')
+```
+
+# Perceived Organizational Support ANOVAs and T-Tests
+
+Perceived Organizational Support:Age (ANOVA)
+```{r, echo=FALSE}
+sup_age.aov <- aov(PERCEIVED_ORGANIZATIONAL_SUPPORT ~ AGE, data = EXCEL)
+summary(sup_age.aov)%>%
+  pander()
+```
+Perceived Organizational Support:Ethnicity (ANOVA)
+```{r, echo=FALSE}
+sup_race.aov <- aov(PERCEIVED_ORGANIZATIONAL_SUPPORT ~ RACE, data = EXCEL)
+summary(sup_race.aov)%>%
+  pander()
+```
+Perceived Organizational Support:Education (ANOVA)
+```{r, echo=FALSE}
+sup_education.aov <- aov(PERCEIVED_ORGANIZATIONAL_SUPPORT ~ EDUCATION, data = EXCEL)
+summary(sup_education.aov)%>%
+  pander()
+```
+Perceived Organizational Support:Years with Company (ANOVA)
+```{r, echo=FALSE}
+sup_years.aov <- aov(PERCEIVED_ORGANIZATIONAL_SUPPORT ~ YEARS_W_COMPANY, data = EXCEL)
+summary(sup_years.aov)%>%
+  pander()
+```
+Perceived Organizational Support:Employment Status (ANOVA)
+```{r, echo=FALSE}
+sup_emp.aov <- aov(PERCEIVED_ORGANIZATIONAL_SUPPORT ~ EMPLOYEMENT_STATUS, data = EXCEL)
+summary(sup_emp.aov)%>%
+  pander()
+```
+Perceived Organizational Support:Income (ANOVA)
+```{r, echo=FALSE}
+sup_income.aov <- aov(PERCEIVED_ORGANIZATIONAL_SUPPORT ~ INCOME, data = EXCEL)
+summary(sup_income.aov)%>%
+  pander()
+```
+Perceived Organizational Support:Marital Status (T-Test)
+```{r, echo=FALSE}
+pander(t.test(PERCEIVED_ORGANIZATIONAL_SUPPORT ~ MARITIAL_STATUS, data = EXCEL, mu = 0, alternative = "two.sided", conf.level = 0.95), caption = 'Perceived Organizational Support by marital status')
+```
+
+
+## Correlation Analysis
+
+  Within this section we will be exporting the relationships of interest. We are looking for the correlation between each of our theoretical variables and intent of turnover by the employee. 
+
+Correlation Analysis with Relationship Quality with Coworkers and Intent of Turnover. 
+```{r, echo=FALSE}
+cor_relation_turn <- cor.test(EXCEL$RELATIONSHIP_QUALITY_WITH_COWORKERS, EXCEL$INTENT_TURNOVER, method = "pearson", use = "complete.obs")
+pander(cor_relation_turn)
+```
+
+Correlation Analysis with Satisfaction with Pay and Intent of Turnover. 
+```{r, echo=FALSE}
+cor_pay_turn <- cor.test(EXCEL$SATISFACTION_W_PAY, EXCEL$INTENT_TURNOVER, method = "pearson", use = "complete.obs")
+pander(cor_pay_turn)
+```
+
+Correlation Analysis with Satisfaction of Benefits and Intent of Turnover. 
+```{r, echo=FALSE}
+cor_ben_turn <- cor.test(EXCEL$SATISFACTION_W_BENEFITS, EXCEL$INTENT_TURNOVER, method = "pearson", use = "complete.obs")
+pander(cor_ben_turn)
+```
+
+Correlation Analysis with Trust in the Manager and Intent of Turnover. 
+```{r, echo=FALSE}
+cor_man_turn <- cor.test(EXCEL$TRUST_MANAGER, EXCEL$INTENT_TURNOVER, method = "pearson", use = "complete.obs")
+pander(cor_man_turn)
+```
+
+Correlation Analysis with Effective Communication and Intent of Turnover. 
+```{r, echo=FALSE}
+cor_comm_turn <- cor.test(EXCEL$COMMUNICATION, EXCEL$INTENT_TURNOVER, method = "pearson", use = "complete.obs")
+pander(cor_comm_turn)
+```
+
+Correlation Analysis with Procedural Justice and Intent of Turnover. 
+```{r, echo=FALSE}
+cor_just_turn <- cor.test(EXCEL$PROCEDURAL_JUSTICE, EXCEL$INTENT_TURNOVER, method = "pearson", use = "complete.obs")
+pander(cor_just_turn)
+```
+
+Correlation Analysis with Advancement Opportunities and Intent of Turnover. 
+```{r, echo=FALSE}
+cor_adve_turn <- cor.test(EXCEL$ADVANCEMENT_OPPORTUNITIES, EXCEL$INTENT_TURNOVER, method = "pearson", use = "complete.obs")
+pander(cor_adve_turn)
+```
+
+Correlation Analysis with Lack of Alternative Job Opportunities and Intent of Turnover. 
+```{r, echo=FALSE}
+cor_lack_turn <- cor.test(EXCEL$LACK_ALTERNATIVE_JOB_OPPORTUNITY, EXCEL$INTENT_TURNOVER, method = "pearson", use = "complete.obs")
+pander(cor_lack_turn)
+```
+
+Correlation Analysis with Perceived Organizational Support and Intent of Turnover. 
+```{r, echo=FALSE}
+cor_sup_turn <- cor.test(EXCEL$PERCEIVED_ORGANIZATIONAL_SUPPORT, EXCEL$INTENT_TURNOVER, method = "pearson", use = "complete.obs")
+pander(cor_sup_turn)
+```
+
+## Regression Analysis
+  Within this section we will be looking for the regression analysis of the theoretical variables and intention of turnover by the employee. 
+
+Regression Analysis of Relationship Quality with Coworkers with Intent of Turnover by employee 
+```{r, echo=FALSE}
+plot(INTENT_TURNOVER ~ RELATIONSHIP_QUALITY_WITH_COWORKERS, data = EXCEL, pch=20, col="firebrick", cex=1.2, las= 1, xlab="Relationship Quality with Coworkers", ylab = "Intention of Turnover")
+
+turn.lm <- lm(INTENT_TURNOVER ~ RELATIONSHIP_QUALITY_WITH_COWORKERS, data = EXCEL)
+abline(turn.lm, lwd = 2)
+par(mfrow = c(1,3))
+plot(turn.lm, which = 1:2)
+plot(turn.lm$residuals)
+```
+```{r, echo=FALSE}
+pander(summary(turn.lm))
+```
+
+Regression Analysis of Satisfaction with Pay with Intent of Turnover by employee 
+```{r, echo=FALSE}
+plot(INTENT_TURNOVER ~ SATISFACTION_W_PAY, data = EXCEL, pch=20, col="firebrick", cex=1.2, las= 1, xlab="Satisfaction with Pay", ylab = "Intention of Turnover")
+
+turn.lm <- lm(INTENT_TURNOVER ~ SATISFACTION_W_PAY, data = EXCEL)
+abline(turn.lm, lwd = 2)
+par(mfrow = c(1,3))
+plot(turn.lm, which = 1:2)
+plot(turn.lm$residuals)
+```
+```{r, echo=FALSE}
+pander(summary(turn.lm))
+```
+Regression Analysis of Satisfaction with Benefits with Intent of Turnover by employee 
+```{r, echo=FALSE}
+plot(INTENT_TURNOVER ~ SATISFACTION_W_BENEFITS, data = EXCEL, pch=20, col="firebrick", cex=1.2, las= 1, xlab="Satisfaction with Benefits", ylab = "Intention of Turnover")
+
+turn.lm <- lm(INTENT_TURNOVER ~ SATISFACTION_W_BENEFITS, data = EXCEL)
+abline(turn.lm, lwd = 2)
+par(mfrow = c(1,3))
+plot(turn.lm, which = 1:2)
+plot(turn.lm$residuals)
+```
+```{r, echo=FALSE}
+pander(summary(turn.lm))
+```
+Regression Analysis of Trust in Manager with Intent of Turnover by employee 
+```{r, echo=FALSE}
+plot(INTENT_TURNOVER ~ TRUST_MANAGER, data = EXCEL, pch=20, col="firebrick", cex=1.2, las= 1, xlab="Trust in Manager", ylab = "Intention of Turnover")
+
+turn.lm <- lm(INTENT_TURNOVER ~ TRUST_MANAGER, data = EXCEL)
+abline(turn.lm, lwd = 2)
+par(mfrow = c(1,3))
+plot(turn.lm, which = 1:2)
+plot(turn.lm$residuals)
+```
+```{r, echo=FALSE}
+pander(summary(turn.lm))
+```
+Regression Analysis of Communication with Intent of Turnover by employee 
+```{r, echo=FALSE}
+plot(INTENT_TURNOVER ~ COMMUNICATION, data = EXCEL, pch=20, col="firebrick", cex=1.2, las= 1, xlab="Communication", ylab = "Intention of Turnover")
+
+turn.lm <- lm(INTENT_TURNOVER ~ COMMUNICATION, data = EXCEL)
+abline(turn.lm, lwd = 2)
+par(mfrow = c(1,3))
+plot(turn.lm, which = 1:2)
+plot(turn.lm$residuals)
+```
+```{r, echo=FALSE}
+pander(summary(turn.lm))
+```
+Regression Analysis of Procedural Justice with Intent of Turnover by employee 
+```{r, echo=FALSE}
+plot(INTENT_TURNOVER ~ PROCEDURAL_JUSTICE, data = EXCEL, pch=20, col="firebrick", cex=1.2, las= 1, xlab="Procedural Justice", ylab = "Intention of Turnover")
+
+turn.lm <- lm(INTENT_TURNOVER ~ PROCEDURAL_JUSTICE, data = EXCEL)
+abline(turn.lm, lwd = 2)
+par(mfrow = c(1,3))
+plot(turn.lm, which = 1:2)
+plot(turn.lm$residuals)
+```
+```{r, echo=FALSE}
+pander(summary(turn.lm))
+```
+Regression Analysis of Advancement Opportunities with Intent of Turnover by employee 
+```{r, echo=FALSE}
+plot(INTENT_TURNOVER ~ ADVANCEMENT_OPPORTUNITIES, data = EXCEL, pch=20, col="firebrick", cex=1.2, las= 1, xlab="Advancement Opportunities", ylab = "Intention of Turnover")
+
+turn.lm <- lm(INTENT_TURNOVER ~ ADVANCEMENT_OPPORTUNITIES, data = EXCEL)
+abline(turn.lm, lwd = 2)
+par(mfrow = c(1,3))
+plot(turn.lm, which = 1:2)
+plot(turn.lm$residuals)
+```
+```{r, echo=FALSE}
+pander(summary(turn.lm))
+```
+Regression Analysis of Lack of Alternative Job Opportunity with Intent of Turnover by employee 
+```{r, echo=FALSE}
+plot(INTENT_TURNOVER ~ LACK_ALTERNATIVE_JOB_OPPORTUNITY, data = EXCEL, pch=20, col="firebrick", cex=1.2, las= 1, xlab="Lack of Alternative Job Opportunity", ylab = "Intention of Turnover")
+
+turn.lm <- lm(INTENT_TURNOVER ~ LACK_ALTERNATIVE_JOB_OPPORTUNITY, data = EXCEL)
+abline(turn.lm, lwd = 2)
+par(mfrow = c(1,3))
+plot(turn.lm, which = 1:2)
+plot(turn.lm$residuals)
+```
+```{r, echo=FALSE}
+plot(LACK_ALTERNATIVE_JOB_OPPORTUNITY ~ INTENT_TURNOVER, data = EXCEL, pch=20, col="firebrick", cex=1.2, las= 1, xlab="Intention of Turnover", ylab = "Lack of Alternative Job Opportunity")
+
+turn.lm <- lm(LACK_ALTERNATIVE_JOB_OPPORTUNITY ~ INTENT_TURNOVER, data = EXCEL)
+abline(turn.lm, lwd = 2)
+par(mfrow = c(1,3))
+plot(turn.lm, which = 1:2)
+plot(turn.lm$residuals)
+```
+
+
+
+```{r, echo=FALSE}
+pander(summary(turn.lm))
+```
+Regression Analysis of Perceived Organizational Support with Intent of Turnover by employee 
+```{r, echo=FALSE}
+plot(INTENT_TURNOVER ~ PERCEIVED_ORGANIZATIONAL_SUPPORT, data = EXCEL, pch=20, col="firebrick", cex=1.2, las= 1, xlab="Perceived Organizational Support", ylab = "Intention of Turnover")
+
+turn.lm <- lm(INTENT_TURNOVER ~ PERCEIVED_ORGANIZATIONAL_SUPPORT, data = EXCEL)
+abline(turn.lm, lwd = 2)
+par(mfrow = c(1,3))
+plot(turn.lm, which = 1:2)
+plot(turn.lm$residuals)
+```
+
+
+
